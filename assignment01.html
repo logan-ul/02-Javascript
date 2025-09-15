@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mini Meme Maker — Assign 1</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Visual classes you’ll toggle in later assignments */
+      .meme {
+        cursor: pointer;
+      }
+      .selected {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.35);
+      }
+      .outlined {
+        outline: 3px dashed #6c757d;
+      } /* Simple meme overlay text */
+      .meme-wrap {
+        position: relative;
+      }
+      .meme-text {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 92%;
+        text-align: center;
+        color: white;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+          2px 2px 0 #000;
+        user-select: none;
+        pointer-events: none;
+      }
+      .meme-text.top {
+        top: 0.6rem;
+      }
+      .meme-text.bottom {
+        bottom: 0.6rem;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <!-- Top bar (buttons & badge will be wired in Assign 2) -->
+    <nav class="navbar bg-body-tertiary border-bottom">
+      <div class="container">
+        <span class="navbar-brand">Mini Meme Maker</span>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge text-bg-primary"
+            >Memes: <span id="countBadge">0</span></span
+          >
+          <button
+            id="outlineBtn"
+            class="btn btn-sm btn-outline-secondary"
+            type="button"
+          >
+            Outline All
+          </button>
+          <button
+            id="clearBtn"
+            class="btn btn-sm btn-outline-danger"
+            type="button"
+          >
+            Clear All
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main class="container py-4">
+      <!-- Form -->
+      <section class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Create a Meme</h5>
+          <form id="memeForm" class="row g-3">
+            <div class="col-12 col-md-6">
+              <label for="imgUrl" class="form-label">Image URL</label>
+              <input
+                id="imgUrl"
+                class="form-control"
+                placeholder="https://example.com/cat.jpg"
+              />
+            </div>
+            <div class="col-12 col-md-3">
+              <label for="topText" class="form-label">Top Text</label>
+              <input id="topText" class="form-control" placeholder="TOP TEXT" />
+            </div>
+            <div class="col-12 col-md-3">
+              <label for="bottomText" class="form-label">Bottom Text</label>
+              <input
+                id="bottomText"
+                class="form-control"
+                placeholder="BOTTOM TEXT"
+              />
+            </div>
+            <div class="col-12 d-flex gap-2">
+              <button class="btn btn-success" type="submit">Add Meme</button>
+              <span id="formMsg" class="text-muted"></span>
+            </div>
+          </form>
+        </div>
+      </section>
+      <!-- Gallery -->
+      <section>
+        <div id="gallery" class="row g-4 gallery-div">
+          <!-- new memes appear here -->
+        </div>
+      </section>
+    </main>
+    <script>
+      // --- DOM references (IDs) ---
+      const memeForm = document.getElementById("memeForm"); // Select this element by ID (memeForm)
+      const imgUrl = document.querySelector("imgUrl").trim(); // Select this element with querySelector (imgUrl)
+      const topText = document.querySelectorAll("topText").trim(); // Select this element with querySelectorAll and then accessing the first element (topText);
+      const bottomText = document.getElementById("bottomText").trim(); // Select this element by ID (bottomText);
+      const formMsg = document.querySelector("formMsg"); // Select this element with querySelector (formMsg);
+      const gallery = document.querySelector("gallery"); // Select this element by class name and selecting the first element (gallery-div)
+
+      /**
+       * makeMemeCard
+       * Creates and returns a Bootstrap column containing a meme card.
+       * Inputs are already-validated strings.
+       */
+
+      function makeMemeCard(url, top, bottom) {
+        const col = document.createElement("div");
+        col.className = "col-12 col-md-4";
+
+        formMsg.addEventListener("click", (event) => {
+          event.preventDefault();
+        });
+
+        const card = document.createElement("div");
+        card.className = "card meme"; // “meme” class used later (Assign 2/3)
+        card.innerHTML = ` 
+        <div class="meme-wrap"> 
+          <img class="img-fluid rounded" src="${url}" alt="meme image" /> 
+          <div class="meme-text top">${top || ""}</div> 
+          <div class="meme-text bottom">${bottom || ""}</div> 
+          <!-- Assign 3 will wire this delete button via event delegation --> 
+          <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 del" title="Delete">🗑</button> 
+        </div> 
+        <div class="card-body py-2 small text-muted">Click card to select/deselect (Assign 3)</div> 
+      `;
+        col.append(card);
+        return col;
+      }
+
+      // --- Assign 1 behavior: validate + create/insert card ---
+      /*  
+    *     1. Add an event listener for the form being submitted 
+    *        - Prevent the form from actually submitting anywhere  
+    *     2. Store the trimmed (.trim()) values from the inputs in variables. 
+    *     3. If the url is an empty string show an error message "Please provide an image URL" in the forms span (id of formMsg) 
+    *        - give the span a class of "text-danger", remove the class of "text-success" 
+    *        - exit out of the handler (return) 
+    *     4. If the url is not empty, show a message "Meme added" in the formMsg span 
+    *        - give the span a class of "text-success", remove the class of "text-danger" 
+    *        - get the values from imgUrl, topText and bottomText, trim them and pass them in to makeMemeCard() 
+    *            - store the element created in a variable 
+    *           - add the new element to the start of the gallery  
+    *            - clear the inputs 
+
+    */
+    </script>
+  </body>
+</html>

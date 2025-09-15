@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+      .img {
+        display: block;
+        width: 100px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="kerry" class="hidden">
+      <video src="have a free sample.mp4"></video>
+    </div>
+    <div class="container">
+      <a id="offTask" href="#">Kerry's up to no good</a>
+      <img class="img" src="its so beautiful.png" alt="" />
+    </div>
+    <script>
+      const kerrysVideo = document.querySelector("video");
+      const kerry = document.getElementById("kerry");
+      const offTask = document.getElementById("offTask");
+
+      offTask.addEventListener("click", (event) => {
+        event.preventDefault(); // stop the link from doing what in normally would
+        console.log("Clicked", event.target.tagname);
+        kerry.classList.remove("hidden");
+        kerrysVideo.play();
+        kerrysVideo.loop = true;
+        kerrysVideo.playbackRate = 10.0;
+        // for loop in js (starting variable, condition, change)
+        for (let i = 0; i < 17; i++) {
+          let newNode = kerrysVideo.cloneNode(true);
+          newNode.style.position = "absolute";
+          newNode.style.left = 20 * i + "px";
+          newNode.style.top = 20 * i + "px";
+          document.body.append(newNode);
+          newNode.play();
+          newNode.loop = true;
+          newNode.playbackRate = i + 1;
+        }
+      });
+      const saveUs = document.querySelector("img");
+      //   different function example
+      saveUs.addEventListener("click", function (e) {
+        const videos = document.querySelectorAll("body > video");
+        for (vid of videos) {
+          setTimeout(
+            function () {
+              vid.remove();
+            },
+            500,
+            vid
+          );
+        }
+      });
+    </script>
+  </body>
+</html>

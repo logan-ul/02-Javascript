@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .highlight {
+        background-color: yellow;
+      }
+      .bolded {
+        font-weight: bold;
+        font-size: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title" class="hero">Hello!</div>
+    <ul>
+      <li class="item">A</li>
+      <li class="item">B</li>
+      <li class="item bolded" id="targetMe">C is a letter</li>
+    </ul>
+    <img
+      src="https://th.bing.com/th?q=Bowler+CR&w=300&h=300"
+      id="bowler"
+      alt=""
+    />
+    <script>
+      //this is where we can run javascript
+      // note: comments are done with // - line comment
+      // or /* block comment /*
+
+      // manipulation is getting objects from the document and changing them in some ways
+
+      // ways to "get" objects
+      //   1
+      //   to select an element by ID - return single item
+      const byId = document.getElementById("title");
+      console.log(byId);
+
+      //   note this does not crash, but undefined is stored in the variable
+      const badElement = document.getElementById("notFound");
+      //   badElement.innertext = "something" - crashed the program because its "undefined"
+
+      //   2
+      //   to select the first element based on a selector
+      const byQS = document.querySelector(".item");
+      //   this will not work because of const:
+      // byQS - "something" crahes "assignemnt to constant variable"
+      // this is okay:
+      byQS.style.color = "red";
+      byQS.name = "first li";
+
+      //   3
+      //   use let for declaring variable that will change
+      let targetClass = "item";
+      // this will return all items with class "item"
+      const allItems = document.getElementsByClassName(targetClass);
+      console.log(allItems);
+      //   because it a collection - this wont work
+      //   allItems.style = "color:blue";
+      allItems[1].style = "color: purple";
+
+      //   4
+      //   this will also return a collection
+      let allLis = document.querySelectorAll("li");
+      allLis[0].style.fontSize = "5em"; //but in css its font-size!!?!?!
+      allLis[1].style.textDecoration = "underline";
+
+      //   add/change content
+      allLis[1].innerText = "I was changed by js";
+
+      const theUL = document.querySelector("ul");
+      console.log(theUL.innerHTML);
+      theUL.innerHTML += "<li>Logan is sad</li>";
+
+      //   change an attribute
+      const bowler = document.getElementById("bowler");
+      bowler.style.width = "200px";
+      // you can do things without the const (chaining):
+      document.getElementById("bowler").src =
+        "https://i.pinimg.com/736x/7e/12/c7/7e12c76a6f8208d7f3d86de28797c609.jpg";
+
+      allLis = document.querySelectorAll("li");
+
+      const target = document.getElementById("targetMe");
+      // add/remove classes
+      target.classList.remove("bolded");
+      target.classList.add("highlight");
+    </script>
+  </body>
+</html>
