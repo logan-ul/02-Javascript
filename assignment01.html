@@ -99,7 +99,9 @@
             </div>
             <div class="col-12 d-flex gap-2">
               <button class="btn btn-success" type="submit">Add Meme</button>
-              <span id="formMsg" class="text-muted"></span>
+              <span id="formMsg" class="text-muted"
+                >Please provide an image URL</span
+              >
             </div>
           </form>
         </div>
@@ -119,6 +121,12 @@
       const bottomText = document.getElementById("bottomText").trim(); // Select this element by ID (bottomText);
       const formMsg = document.querySelector("formMsg"); // Select this element with querySelector (formMsg);
       const gallery = document.querySelector("gallery"); // Select this element by class name and selecting the first element (gallery-div)
+      
+      let realTopText = topText.innerText.strip()
+      let realBottomText = topText.innerText.strip()
+      let realImgUrl = topText.innerText.strip()
+
+
 
       /**
        * makeMemeCard
@@ -132,6 +140,11 @@
 
         formMsg.addEventListener("click", (event) => {
           event.preventDefault();
+          console.log(imgUrl);
+          console.log(imgUrl.innerHTML);
+          if ((imgUrl.innerHTML = "")) {
+            formMsg.innerHTML = "";
+          }
         });
 
         const card = document.createElement("div");
