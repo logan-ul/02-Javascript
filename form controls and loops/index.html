@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="" id="myForm">
+      <select name="" id="student">
+        <option value="Logan">Logan</option>
+        <option value="Tj">Tj</option>
+        <option value="Kerry">Kerry</option>
+        <option value="Josh">Josh</option>
+        <option value="Bryan">Bryan</option>
+        <option value="Jackson">Jackson</option>
+      </select>
+      <label>
+        <input type="checkbox" name="isEmployed" id="isEmployed" />
+        Is employed
+      </label>
+      <button>Submit</button>
+    </form>
+    <p id="message"></p>
+    <script>
+      //document.addEventListener("DOMContentLoaded", (e)=> {
+      // this runs after content is loaded
+      //})
+      const message = document.getElementById("message");
+      const form = document.querySelector("#myForm");
+      const studentSelect = document.querySelectorAll("select")[0];
+      const employed = document.getElementsByTagName("input")[0];
+
+      // handle form submit
+      form.addEventListener("submit", (e) => {
+        //e is the event object
+        e.preventDefault();
+        let data = new FormData(form);
+        // get value of select
+        let selectedStudent = studentSelect.value;
+        let employedval = data.get("isEmployed");
+        //True and False
+        //Truthy and Falsy
+        //Falsy: null, undefined, '', 0 - these are false
+        //if (employedval) {
+        //  msg = "is Employed";
+        //} else {
+        //  msg = "just got fired";
+        //}
+        // ternary operator:
+        //inline if
+        //condition ? value if true : value if false
+        msg = employedval ? "is employed" : "needs a job";
+        message.innerText = `${selectedStudent} employed: ${msg} `; //like f"string in {python}"
+      });
+    </script>
+  </body>
+</html>

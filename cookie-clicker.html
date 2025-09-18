@@ -10,22 +10,36 @@
     />
   </head>
   <body style="display: flex">
-    <div style="width: 25%" class="text-center">
-        <img id="cookie" src="#" alt="cookie">
+    <div
+      style="
+        width: 25%;
+        padding: 10px;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+      class="text-center"
+    >
+      <img
+        style="width: 100%"
+        id="cookie"
+        src="cookie-clipart-xl.png"
+        alt="cookie"
+      />
     </div>
     <div style="width: 75%" class="text-center">
-        <div>counter:</div>
-        <div id="counter">0</div>
+      <div>counter:</div>
+      <div id="counter">0</div>
     </div>
   </body>
 
-
-
   <script>
-    let counter = 0
-    const cookie = document.getElementById("cookie")
-    cookie.addEventListener("click", (e)=>(
-        counter += 1
-    ))
+    let counter = 0;
+    const cookie = document.getElementById("cookie");
+    cookie.addEventListener("click", (e) => {
+      counter += 1;
+      document.getElementById("counter").innerHTML = counter;
+    });
   </script>
 </html>

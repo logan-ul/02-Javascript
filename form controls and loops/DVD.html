@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="width"></p>
+    <p id="height"></p>
+    <p id="num"></p>
+    <img
+      src="image (2).png"
+      style="position: absolute; top: 0; left: 0; width: 200px; height: 200px"
+      alt=""
+    />
+    <script>
+      const winWidth = document.getElementById("width");
+      const winheight = document.getElementById("height");
+      const img = document.querySelector("img");
+      let imgX = 0;
+      let imgY = 0;
+        let X = true
+        let Y = false
+      winWidth.innerText = window.innerWidth;
+      winheight.innerText = window.innerHeight;
+      window.addEventListener("resize", (e) => {
+        winWidth.innerText = window.innerWidth;
+        winheight.innerText = window.innerHeight;
+      });
+
+      let interval = setInterval(() => {
+        if (imgX >= winWidth - 200) {
+          X = false
+        }
+        if (imgY >= winheight - 200) {
+          Y = true
+        }
+        console.log(imgX);
+        console.log(imgY);
+        img.style.top = `${imgX}px`;
+        img.style.left = `${imgY}px`;
+      }, 10);
+    </script>
+  </body>
+</html>
