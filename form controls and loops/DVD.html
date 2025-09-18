@@ -11,17 +11,17 @@
     <p id="num"></p>
     <img
       src="image (2).png"
-      style="position: absolute; top: 0; left: 0; width: 200px; height: 200px"
+      style="position: absolute; top: 5; left: 5; width: 200px; height: 200px"
       alt=""
     />
     <script>
       const winWidth = document.getElementById("width");
       const winheight = document.getElementById("height");
       const img = document.querySelector("img");
-      let imgX = 0;
-      let imgY = 0;
-        let X = true
-        let Y = false
+      let imgX = 5;
+      let imgY = 5;
+      let X = true;
+      let Y = false;
       winWidth.innerText = window.innerWidth;
       winheight.innerText = window.innerHeight;
       window.addEventListener("resize", (e) => {
@@ -30,16 +30,29 @@
       });
 
       let interval = setInterval(() => {
-        if (imgX >= winWidth - 200) {
-          X = false
+        if (imgX >= winWidth.innerText - 200 || imgX <= 0) {
+          X = !X;
         }
-        if (imgY >= winheight - 200) {
-          Y = true
+        if (imgY >= winheight.innerText - 200 || imgY <= 0) {
+          Y = !Y;
         }
+
+        if (X) {
+          imgX += 1;
+        } else {
+          imgX -= 1;
+        }
+
+        if (Y) {
+          imgY -= 1;
+        } else {
+          imgY += 1;
+        }
+
         console.log(imgX);
         console.log(imgY);
-        img.style.top = `${imgX}px`;
-        img.style.left = `${imgY}px`;
+        img.style.top = `${imgY}px`;
+        img.style.left = `${imgX}px`;
       }, 10);
     </script>
   </body>
