@@ -1,0 +1,101 @@
+!<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Snack Shelf</title>
+    <style>
+      .highlight {
+        background: gold;
+        border: 2px solid black;
+        font-size: 1.5em;
+      }
+      .snack {
+        padding: 0.4rem 0.6rem;
+        margin: 0.25rem 0;
+        list-style: "🛰️ ";
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="pageTitle">Space Snack Shelf</h1>
+    <div class="toolbar">
+      <button id="featureBtn">Feature First Snack</button>
+      <button id="clearBtn">Clear Highlights</button>
+    </div>
+    <ul id="snackList">
+      <li class="snack">Moon Pie</li>
+      <li class="snack">Meteor Chips</li>
+      <li class="snack">Comet Gummies</li>
+    </ul>
+    <form id="snackForm" action="#">
+      <input type="text" name="snackName" placeholder="Snack name" required />
+      <select name="snackEmoji">
+        <option value="">--Choose Emoji--</option>
+        <option value="🍪">Cookie</option>
+        <option value="🍫">Chocolate</option>
+        <option value="🍩">Donut</option>
+        <option value="🍬">Candy</option>
+        <option value="🍿">Popcorn</option>
+      </select>
+      <button type="submit">Add Snack</button>
+      <label>
+        <input type="checkbox" name="addToTop" /> Add to top (prepend)
+      </label>
+    </form>
+    <script>
+      // Students: Write your JavaScript here.
+      // Must use:
+      // - getElementById
+      // - querySelector
+      // - querySelectorAll
+      // - classList.add / classList.remove
+      // - Adding inline styles
+      // - prepend / append
+      // - FormData.get to retrieve form values
+      document.addEventListener("DOMContentLoaded", (e) => {
+        const pageTitle = document.getElementById("pageTitle");
+
+        pageTitle.style.color = "darkblue";
+        pageTitle.style.letterSpacing = "3px";
+      });
+      document.getElementById("featureBtn").addEventListener("click", (e) => {
+        const snack = document.querySelector(".snack");
+        snack.classList.add("highlight");
+        snack.style.textTransform = "uppercase";
+        snack.style.backgroundColor = "lightyellow";
+      });
+      document.getElementById("clearBtn").addEventListener("click", (e) => {
+        const snacks = document.querySelectorAll(".snack");
+        for (let i = 0; i < 4; i++) {
+          snacks[i].classList.remove("highlight");
+        }
+      });
+      document.getElementById("snackForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const form = new FormData(document.getElementById("snackForm"));
+        const newLi = document.createElement("li");
+        newLi.classList.add("snack");
+        console.log(newLi);
+        if (form.get("snackEmoji")) {
+          if (form.get("addToTop")) {
+            newLi.prepend(`${form.get("snackEmoji")} ${form.get("snackName")}`);
+            document.getElementById("snackList").prepend(newLi);
+          } else {
+            newLi.append(`${form.get("snackEmoji")} ${form.get("snackName")}`);
+            document.getElementById("snackList").append(newLi);
+          }
+        } else {
+          if (form.get("addToTop")) {
+            newLi.append(`${form.get("snackName")}`);
+            document.getElementById("snackList").prepend(newLi);
+          } else {
+            newLi.append(`${form.get("snackName")}`);
+            document.getElementById("snackList").append(newLi);
+          }
+        }
+        document.getElementById("snackForm").reset();
+      });
+    </script>
+  </body>
+</html>
