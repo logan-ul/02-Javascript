@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API bruv</title>
+    <style>
+      :root {
+        --poke-width: 100px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+      }
+      .container > h1 {
+        text-align: center;
+      }
+      #scene {
+        min-height: 600px;
+        background-image: url(background.jpg);
+        background-size: cover;
+        cursor: crosshair;
+      }
+      .pokebutton {
+        width: 20%;
+        display: inline-block;
+        border: 1px solid black;
+        padding: 0.5em;
+        text-align: center;
+        box-sizing: border-box;
+        user-select: none;
+      }
+      .pokebutton:hover {
+        cursor: pointer;
+        border: 1px solid red;
+        background-color: lightgrey;
+      }
+      .pokebutton:active {
+        background-color: darkgrey;
+      }
+      #buttonList {
+        border: 5px solid yellow;
+      }
+      .clicked {
+        border: 1px solid green;
+        background-color: yellow;
+      }
+      .pokeimg {
+        width: var(--poke-width);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- APIs let your product or service connect with others without knowing th underlying implementation
+     We are going to be using Fetch to interact with a REST API 
+     -->
+    <div class="container">
+      <h1>Poke Hunt!</h1>
+      <div id="scene"></div>
+      <div id="buttonList" class="pokeList"></div>
+    </div>
+
+    <script>
+      const buttonList = document.getElementById("buttonList");
+
+      buttonList.addEventListener("click", function (event) {
+        const elementClicked = event.target.closest(".pokebutton");
+        elementClicked.classList.add("clicked");
+        let url = elementClicked.dataset.url;
+        fetch(url)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            //console.log(data);
+            document.getElementById("scene").append(createPokemon(data));
+          });
+      });
+      function createPokemon(pokemon) {
+        let pokeimg = document.createElement("img");
+        console.log(pokemon);
+        pokeimg.src = pokemon.sprites.other["official-artwork"].front_default;
+        pokeimg.classList.add("pokeimg");
+        pokeimg.style.top = 0;
+        pokeimg.style.left = 0;
+        pokeimg.dataset.top = 0;
+        return pokeimg;
+      }
+      function createPokeButton(pokeRecord) {
+        let pokeDiv = document.createElement("div");
+        pokeDiv.classList.add("pokebutton");
+        pokeDiv.innerHTML = pokeRecord.name;
+        pokeDiv.dataset.url = pokeRecord.url;
+        return pokeDiv;
+      }
+      function start() {
+        // use a fetch GET request to get all pokemon available
+        fetch("https://pokeapi.co/api/v2/pokemon/?limit=1400")
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            //console.log(data);
+            buttonList.innerHTML = "";
+            for (pokemon of data.results) {
+              //console.log(pokemon);
+              buttonList.append(createPokeButton(pokemon));
+            }
+          });
+      }
+      start();
+    </script>
+  </body>
+</html>
