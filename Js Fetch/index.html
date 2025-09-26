@@ -76,9 +76,12 @@
           })
           .then((data) => {
             //console.log(data);
-            document.getElementById("scene").append(createPokemon(data));
+            addPokemonToScene(data);
           });
       });
+      function addPokemonToScene(pokemonimg) {
+        document.getElementById("scene").append(pokemonimg);
+      }
       function createPokemon(pokemon) {
         let pokeimg = document.createElement("img");
         console.log(pokemon);
