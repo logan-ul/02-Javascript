@@ -65,6 +65,7 @@
 
     <script>
       const buttonList = document.getElementById("buttonList");
+      const scene = document.getElementById("scene");
 
       buttonList.addEventListener("click", function (event) {
         const elementClicked = event.target.closest(".pokebutton");
@@ -75,16 +76,28 @@
             return response.json();
           })
           .then((data) => {
-            //console.log(data);
-            addPokemonToScene(data);
+            // console.log(data);
+            addPokemonToScene(createPokemon(data));
           });
       });
-      function addPokemonToScene(pokemonimg) {
-        document.getElementById("scene").append(pokemonimg);
+
+      function getRandomInt(min, max) {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
       }
+
+      function addPokemonToScene(pokemonimg) {
+        scene.append(pokemonimg);
+        console.log(pokemonimg.clientWidth);
+        let randomnum = getRandomInt(0, 1200 - pokemonimg.clientWidth);
+        console.log(randomnum);
+        pokemonimg.style.left = `${randomnum}px`;
+      }
+
       function createPokemon(pokemon) {
         let pokeimg = document.createElement("img");
-        console.log(pokemon);
+        //console.log(pokemon);
         pokeimg.src = pokemon.sprites.other["official-artwork"].front_default;
         pokeimg.classList.add("pokeimg");
         pokeimg.style.top = 0;
@@ -92,6 +105,7 @@
         pokeimg.dataset.top = 0;
         return pokeimg;
       }
+
       function createPokeButton(pokeRecord) {
         let pokeDiv = document.createElement("div");
         pokeDiv.classList.add("pokebutton");
@@ -99,6 +113,7 @@
         pokeDiv.dataset.url = pokeRecord.url;
         return pokeDiv;
       }
+
       function start() {
         // use a fetch GET request to get all pokemon available
         fetch("https://pokeapi.co/api/v2/pokemon/?limit=1400")
@@ -114,6 +129,7 @@
             }
           });
       }
+
       start();
     </script>
   </body>
