@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container"></div>
+  </body>
+  <script>
+    function createName(name) {
+      let nameElement = document.createElement("div");
+      nameElement.innerHTML = name;
+      return nameElement;
+    }
+
+    fetch("https://rickandmortyapi.com/api/character")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        for (char in data.results) {
+          console.log(char);
+          console.log(data.results[char].name);
+          document
+            .querySelector(".container")
+            .append(createName(data.results[char].name));
+        }
+      });
+  </script>
+</html>
